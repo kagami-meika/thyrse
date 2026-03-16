@@ -25,6 +25,10 @@ classifiers = [
 ]
 dependencies = []
 
+[[project.authors]]
+name = "kagami-meika"
+email = "meikakagami0512@gmail.com"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=6.0",
