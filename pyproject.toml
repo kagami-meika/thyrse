@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "thyrse"
 version = "0.1.0"
 description = "Fast and elegant functional programming toolkit for Python"
-authors = ["kagami-meika <meikakagami0512@gmail.com>"]
+authors = [{name = "kagami-meika", email = "meikakagami0512@gmail.com"}]
 readme = "README.md"
 license = {text = "CC0-1.0"}
 requires-python = ">=3.8"
