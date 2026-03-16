@@ -1,0 +1,6 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+recursive-include chrysalis *.py
+recursive-exclude chrysalis __pycache__
+recursive-exclude chrysalis *.pyc
