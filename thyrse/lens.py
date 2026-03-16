@@ -1,18 +1,3 @@
-# Copyright (C) 2026 FPLL Contributors
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program. If not, see <https://www.gnu.org/licenses/>.
-
 """透镜（Lens）工具：支持安全、不可变地深层更新对象结构。
 
 本模块提供了一套 Lens API，可在不修改原始数据的情况下读取/写入深层嵌套结构

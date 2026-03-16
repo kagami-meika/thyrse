@@ -6,13 +6,13 @@
 #
 # See: http://creativecommons.org/publicdomain/zero/1.0/
 
-"""Chrysalis - A fast and elegant functional programming toolkit for Python
+"""Thyrse - A fast and elegant functional programming toolkit for Python
 
 A comprehensive toolkit for functional programming, providing lambda calculus 
 combinators, higher-order functions, algebraic data types, lenses, and more.
 
 Quick start:
-    from chrysalis import I, K, S, curry, tap, pipe, Some, Ok
+    from thyrse import I, K, S, curry, tap, pipe, Some, Ok
 
     # Combinators
     assert I(1) == 1

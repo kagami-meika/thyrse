@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2026-03-16
 
 ### Added
-- Initial release of Chrysalis
+- Initial release of Thyrse
 - Lambda calculus combinators (I, K, S, B, C, W, Y, Omega)
 - Function utilities (compose, pipe, curry, uncurry, etc.)
 - Predicates and data access functions
@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Zero external dependencies
 
 ### Changed
-- Renamed from FPLL (Fast Python Lambda Library) to Chrysalis
+- Renamed from FPLL (Fast Python Lambda Library) to Thyrse
 - Relicensed from AGPL-3.0 to CC0-1.0 (Public Domain)
 - Rewrote README for PyPI
 

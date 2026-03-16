@@ -3,10 +3,10 @@ requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "chrysalis"
+name = "thyrse"
 version = "0.1.0"
 description = "Fast and elegant functional programming toolkit for Python"
-authors = [{name = "Chrysalis Contributors", email = ""}]
+authors = [{name = "Thyrse Contributors", email = ""}]
 readme = "README.md"
 license = {text = "CC0-1.0"}
 requires-python = ">=3.8"
@@ -36,17 +36,17 @@ dev = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/kagami-meika/chrysalis"
-"Documentation" = "https://github.com/kagami-meika/chrysalis"
-"Source Code" = "https://github.com/kagami-meika/chrysalis"
-"Bug Tracker" = "https://github.com/kagami-meika/chrysalis/issues"
-"Changelog" = "https://github.com/kagami-meika/chrysalis/blob/main/CHANGELOG.md"
+"Homepage" = "https://github.com/kagami-meika/thyrse.git"
+"Documentation" = "https://github.com/kagami-meika/thyrse"
+"Source Code" = "https://github.com/kagami-meika/thyrse"
+"Bug Tracker" = "https://github.com/kagami-meika/thyrse/issues"
+"Changelog" = "https://github.com/kagami-meika/thyrse/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
-packages = ["chrysalis"]
+packages = ["thyrse"]
 
 [tool.setuptools.package-data]
-chrysalis = ["py.typed"]
+thyrse = ["py.typed"]
 
 [tool.black]
 line-length = 100

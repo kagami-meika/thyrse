@@ -1,12 +1,12 @@
-# Chrysalis
+# Thyrse
 
 [![License: CC0 1.0 Universal](https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 [![Python >= 3.8](https://img.shields.io/badge/Python-%3E%3D%203.8-blue.svg)](https://www.python.org/downloads/)
-[![PyPI](https://img.shields.io/pypi/v/chrysalis.svg)](https://pypi.org/project/chrysalis/)
+[![PyPI](https://img.shields.io/pypi/v/thyrse.svg)](https://pypi.org/project/thyrse/)
 
 > A fast and elegant functional programming toolkit for Python
 
-**Chrysalis** is a comprehensive toolkit for functional programming in Python. It provides lambda calculus combinators, higher-order functions, algebraic data types, lenses, and many other tools to help you write elegant, functional Python code.
+**Thyrse** is a comprehensive toolkit for functional programming in Python. It provides lambda calculus combinators, higher-order functions, algebraic data types, lenses, and many other tools to help you write elegant, functional Python code.
 
 ## Features
 
@@ -23,7 +23,7 @@
 ## Installation
 
 ```bash
-pip install chrysalis
+pip install thyrse
 ```
 
 ## Quick Start
@@ -31,7 +31,7 @@ pip install chrysalis
 ### Basic Combinators
 
 ```python
-from chrysalis import I, K, S, curry, pipe, tap
+from thyrse import I, K, S, curry, pipe, tap
 
 # Identity combinator
 assert I(42) == 42
@@ -64,7 +64,7 @@ result = pipe(
 ### Working with Optional and Result
 
 ```python
-from chrysalis import Some, Nothing, Ok, Err
+from thyrse import Some, Nothing, Ok, Err
 
 # Optional type
 opt_value = Some(5)
@@ -90,7 +90,7 @@ result = (
 ### Function Composition
 
 ```python
-from chrysalis import compose, curry
+from thyrse import compose, curry
 
 # Compose functions right-to-left
 add_one = lambda x: x + 1
@@ -102,14 +102,14 @@ f = compose(triple, double, add_one)
 assert f(2) == 18  # triple(double(3)) = triple(6) = 18
 
 # Or use pipe for left-to-right
-from chrysalis import pipe
+from thyrse import pipe
 assert pipe(2, add_one, double, triple) == 18
 ```
 
 ### Predicates and Data Access
 
 ```python
-from chrysalis import prop, get, get_in, has, is_type
+from thyrse import prop, get, get_in, has, is_type
 
 data = {"user": {"name": "Alice", "age": 30}}
 
@@ -129,7 +129,7 @@ assert get_name({"name": "Bob", "age": 25}) == "Bob"
 ### Lenses for Data Manipulation
 
 ```python
-from chrysalis import lens, view, set_, over
+from thyrse import lens, view, set_, over
 
 # Create a lens for a nested property
 user_age = lens().user.age
@@ -152,7 +152,7 @@ assert view(user_age, incremented) == 31
 
 ```python
 import asyncio
-from chrysalis import async_pipe, async_compose
+from thyrse import async_pipe, async_compose
 
 async def fetch_user(user_id):
     # Simulated async operation
@@ -179,7 +179,7 @@ asyncio.run(main())
 
 ## Core Modules
 
-### Combinators (`chrysalis.combinators`)
+### Combinators (`thyrse.combinators`)
 
 Classic lambda calculus combinators for building higher-order abstractions:
 
@@ -192,7 +192,7 @@ Classic lambda calculus combinators for building higher-order abstractions:
 - **Y**: Fixed-point combinator (for recursion)
 - **Omega**: Self-replicating combinator
 
-### Function Utilities (`chrysalis.func`)
+### Function Utilities (`thyrse.func`)
 
 High-order functions and functional programming utilities:
 
@@ -210,7 +210,7 @@ High-order functions and functional programming utilities:
 - `async_compose` / `async_pipe`: Async function composition
 - `fork` / `branch`: Parallel processing of functions
 
-### Predicates (`chrysalis.predicates`)
+### Predicates (`thyrse.predicates`)
 
 Type checking and data access predicates:
 
@@ -221,7 +221,7 @@ Type checking and data access predicates:
 - `and_` / `or_` / `not_`: Logical predicates
 - `truthy` / `falsy`: Truthiness checks
 
-### Algebraic Data Types (`chrysalis.adts`)
+### Algebraic Data Types (`thyrse.adts`)
 
 Type-safe error handling with algebraic data types:
 
@@ -230,7 +230,7 @@ Type-safe error handling with algebraic data types:
 - `AsyncResult` / `AsyncOk` / `AsyncErr`: Async results
 - All support `map()`, `flat_map()`, and other functional operations
 
-### Lenses (`chrysalis.lens`)
+### Lenses (`thyrse.lens`)
 
 Composable getters/setters for nested data structures:
 
@@ -240,7 +240,7 @@ Composable getters/setters for nested data structures:
 - `over()`: Transform value through lens
 - Works with any nested data structure
 
-### Lazy Evaluation (`chrysalis.lazy`)
+### Lazy Evaluation (`thyrse.lazy`)
 
 Deferred computation and memoization:
 
@@ -248,7 +248,7 @@ Deferred computation and memoization:
 - `AsyncLazy`: Async lazy evaluation
 - `thunk()` / `force()`: Quick lazy evaluation
 
-### Control Flow (`chrysalis.declarative_flow`, `chrysalis.inline_flow`)
+### Control Flow (`thyrse.declarative_flow`, `thyrse.inline_flow`)
 
 Declarative and inline control flow constructs:
 
@@ -257,7 +257,7 @@ Declarative and inline control flow constructs:
 - `match`: Pattern matching
 - `using`: Resource management
 
-### Safe Evaluation (`chrysalis.safe`)
+### Safe Evaluation (`thyrse.safe`)
 
 Safe function wrapping and execution:
 
@@ -266,14 +266,14 @@ Safe function wrapping and execution:
 
 ## API Documentation
 
-For detailed API documentation, visit the [GitHub repository](https://github.com/yourusername/chrysalis).
+For detailed API documentation, visit the [GitHub repository](https://github.com/kagami-meika/thyrse.git).
 
 ## Examples
 
 ### Data Processing Pipeline
 
 ```python
-from chrysalis import pipe, partition, groupby, prop, map
+from thyrse import pipe, partition, groupby, prop, map
 
 users = [
     {"name": "Alice", "age": 30, "active": True},
@@ -296,7 +296,7 @@ print(active_users)
 ### Error Handling
 
 ```python
-from chrysalis import Ok, Err, Result
+from thyrse import Ok, Err, Result
 
 def parse_int(s):
     try:
@@ -344,4 +344,4 @@ CC0 1.0 Universal means this work is in the public domain. You can copy, modify,
 
 ## Support
 
-For issues, questions, or suggestions, please open an issue on the [GitHub repository](https://github.com/yourusername/chrysalis).
+For issues, questions, or suggestions, please open an issue on the [GitHub repository](https://github.com/kagami-meika/thyrse.git).
