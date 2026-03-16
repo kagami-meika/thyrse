@@ -1,74 +1,23 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "thyrse"
 version = "0.1.0"
-description = "Fast and elegant functional programming toolkit for Python“
+description = "Fast and elegant functional programming toolkit for Python"
 readme = "README.md"
-license = {text = "CC0-1.0"}
 requires-python = ">=3.8"
-keywords = ["functional-programming", "lambda", "combinators", "functional", "python"]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Typing :: Typed",
+license = {text = "CC0-1.0"}
+authors = [
+  {name = "kagami-meika", email = "meikakagami0512@gmail.com"}
 ]
-dependencies = []
-
-[[project.authors]]
-name = "kagami-meika"
-email = "meikakagami0512@gmail.com"
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=6.0",
-    "pytest-cov>=2.0",
-    "black>=21.0",
-    "isort>=5.0",
-    "mypy>=0.900",
-]
-
-[project.urls]
-"Homepage" = "https://github.com/kagami-meika/thyrse.git"
-"Documentation" = "https://github.com/kagami-meika/thyrse"
-"Source Code" = "https://github.com/kagami-meika/thyrse"
-"Bug Tracker" = "https://github.com/kagami-meika/thyrse/issues"
-"Changelog" = "https://github.com/kagami-meika/thyrse/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
 packages = ["thyrse"]
 
-[tool.setuptools.package-data]
-thyrse = ["py.typed"]
-
 [tool.black]
 line-length = 100
-target-version = ['py38', 'py39', 'py310', 'py311']
 
 [tool.isort]
 profile = "black"
-line_length = 100
-multi_line_mode = 3
-
-[tool.mypy]
-python_version = "3.8"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = false
-disallow_incomplete_defs = false
-
-[tool.pytest.ini_options]
-minversion = "6.0"
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-
