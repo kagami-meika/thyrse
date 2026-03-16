@@ -3,7 +3,7 @@
 该模块提供一个魔法占位符 `_`，可以用于按链式方式构造 lambda 表达式。
 
 示例:
-    from fpll.implicit import _
+    from .implicit import _
 
     fn = _.upper() + "!"
     assert fn("hello") == "HELLO!"
@@ -13,7 +13,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Callable, TypeVar
+from typing import Any, Callable, TypeVar, Tuple
 
 import re
 
@@ -165,62 +165,164 @@ class I:
         return self._binary_op(other, lambda a, b: a != b)
 
 
-def apply(func: Callable[..., T], *args: Any, **kwargs: Any) -> I | T:
-    """使用 _ 占位符进行偏函数应用。
+# --- 新增 MultiI 类 (继承 I，处理多变量) ---
+class MultiI(I):
+    """多变量隐式占位符。其内部 f 接受整个参数元组。"""
+    __slots__ = ("f", "method")
 
-    这是一个包装函数，用于支持类似 `apply(sum, _, 1)` 等价于 `lambda x: sum(x, 1)` 的语法。
+    def __init__(self, f: Callable[[Tuple[Any, ...]], Any], method: bool = False):
+        super().__init__(f, method)
 
-    示例:
-        from fpll import apply, _
+    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+        if self.method:
+            return MultiI(lambda a: self.f(a)(*args, **kwargs), method=False)
+        # 多变量版本直接消费所有 args
+        return self.f(args)
 
-        sum_with_1 = apply(sum, _, 1)
-        assert sum_with_1([1, 2, 3]) == 7  # sum([1,2,3], 1) = 7
+    def __getattr__(self, name: str) -> MultiI:
+        return MultiI(lambda a: getattr(self.f(a), name), method=True)
 
-        max_with_default = apply(max, _, default=0)
-        assert max_with_default([1, 2, 3]) == 3
+    def __getitem__(self, key: Any) -> MultiI:
+        return MultiI(lambda a: self.f(a)[key])
 
-    参数:
-        func: 要应用的函数
-        *args: 位置参数，可以包含 _ 占位符
-        **kwargs: 关键字参数
+    # 运算符重载，始终返回 MultiI
+    def _binary_op(self, other: Any, op: Callable[[Any, Any], Any], reverse: bool = False) -> "MultiI":
+        if isinstance(other, MultiI):
+            if reverse:
+                return MultiI(lambda x: op(other.f(x), self.f(x)))
+            return MultiI(lambda x: op(self.f(x), other.f(x)))
+        if isinstance(other, I):
+            if reverse:
+                return MultiI(lambda x: op(other.f(x), self.f(x)))
+            return MultiI(lambda x: op(self.f(x), other.f(x)))
+        if reverse:
+            return MultiI(lambda x: op(other, self.f(x)))
+        return MultiI(lambda x: op(self.f(x), other))
 
-    返回值:
-        如果包含 _ 占位符，返回一个 I 对象（即 lambda）
-        否则直接调用 func 并返回结果
+    def __add__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a + b)
 
-    抛出:
-        ValueError: 如果使用了多个 _ 占位符或缺少 _ 占位符
-    """
-    # 找出所有占位符的位置
-    placeholder_positions = [i for i, arg in enumerate(args) if isinstance(arg, I) and arg.f.__name__ == "<lambda>" and arg.f(None) is None]
-    
-    # 用更准确的方式检测是否是默认的 _ 占位符
-    placeholder_positions = []
-    for i, arg in enumerate(args):
-        if isinstance(arg, I) and arg.method is False:
-            # 检查这是否是默认的 _ 对象（通过比较 f 是否为恒等函数）
+    def __radd__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a + b, reverse=True)
+
+    def __sub__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a - b)
+
+    def __rsub__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a - b, reverse=True)
+
+    def __mul__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a * b)
+
+    def __rmul__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a * b, reverse=True)
+
+    def __truediv__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a / b)
+
+    def __rtruediv__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a / b, reverse=True)
+
+    def __floordiv__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a // b)
+
+    def __rfloordiv__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a // b, reverse=True)
+
+    def __mod__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a % b)
+
+    def __rmod__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a % b, reverse=True)
+
+    def __pow__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a**b)
+
+    def __rpow__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a**b, reverse=True)
+
+    # 逻辑运算
+    def __and__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a and b)
+
+    def __or__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a or b)
+
+    def __invert__(self) -> "MultiI":
+        return MultiI(lambda x: not self.f(x))
+
+    # 比较运算
+    def __lt__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a < b)
+
+    def __le__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a <= b)
+
+    def __gt__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a > b)
+
+    def __ge__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a >= b)
+
+    def __eq__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a == b)
+
+    def __ne__(self, other: Any) -> "MultiI":
+        return self._binary_op(other, lambda a, b: a != b)
+
+class ImplicitSeries:
+    """提供 _0, _1 ... _f 的无限迭代器。"""
+    def __init__(self):
+        self._cache = {}
+
+    def __getitem__(self, index: int) -> MultiI:
+        if index not in self._cache:
+            # 核心逻辑：从参数元组中提取特定索引的值
+            self._cache[index] = MultiI(f=lambda args, i=index: args[i])
+        return self._cache[index]
+
+    def __getattr__(self, name: str) -> MultiI:
+        if name.startswith("_"):
             try:
-                if arg.f(42) == 42 and arg.f("test") == "test":
-                    placeholder_positions.append(i)
-            except:
-                pass
-    
-    if not placeholder_positions:
-        # 没有占位符，直接调用函数
+                return self[int(name[1:], 16)]
+            except ValueError:
+                raise AttributeError(name)
+        raise AttributeError(name)
+
+# --- 增强的 apply 函数 ---
+def apply(func: Callable[..., T], *args: Any, **kwargs: Any) -> I | MultiI | T:
+    """支持 I (_) 和 MultiI (_n) 的偏函数应用。"""
+    # 查找所有占位符及其类型
+    placeholders = []
+    for i, arg in enumerate(args):
+        if isinstance(arg, MultiI):
+            placeholders.append((i, "multi"))
+        elif isinstance(arg, I):
+            # 检查是否是原始的单变量 _ (恒等函数)
+            placeholders.append((i, "single"))
+
+    if not placeholders:
         return func(*args, **kwargs)
-    
-    if len(placeholder_positions) > 1:
-        raise ValueError(f"Cannot use multiple _ placeholders in apply. Found {len(placeholder_positions)} placeholders.")
-    
-    placeholder_pos = placeholder_positions[0]
-    
-    def bound_func(x: Any) -> T:
-        # 将占位符替换为实际值
-        new_args = [x if i == placeholder_pos else arg for i, arg in enumerate(args)]
+
+    # 如果有多个占位符，统一升级为 MultiI 逻辑
+    def bound_func(input_args: Tuple[Any, ...]) -> T:
+        new_args = list(args)
+        multi_idx = 0
+        for pos, p_type in placeholders:
+            if p_type == "multi":
+                # MultiI 占位符自带取值逻辑
+                new_args[pos] = args[pos].f(input_args)
+            else:
+                # 单变量 _ 默认按顺序消耗传入的参数
+                new_args[pos] = input_args[multi_idx]
+                multi_idx += 1
         return func(*new_args, **kwargs)
-    
-    return I(bound_func)
+
+    return MultiI(bound_func)
 
 
 # 约定：`_` 是隐式占位符，用于构造一行式表达式
 _ = I()
+ims = ImplicitSeries()
+_0, _1, _2, _3, _4, _5, _6, _7, _8, _9 = (ims[i] for i in range(10))
+_a, _b, _c, _d, _e, _f = (ims[i] for i in range(10, 16))

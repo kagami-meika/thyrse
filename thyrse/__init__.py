@@ -62,7 +62,7 @@ from .func import (
 )
 from .predicates import get_in, prop, get, has, is_type, and_, or_, not_, truthy, falsy
 from .lazy import thunk, force, Lazy, AsyncLazy
-from .implicit import _, I as Implicit, apply
+from .implicit import _, I as Implicit, apply,MultiI, ImplicitSeries,ims, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _a, _b, _c, _d, _e, _f
 from .inline_flow import iif, comprehension
 from .declarative_flow import attempt, using, match
 from .adts import Optional, Some, Nothing, Result, Ok, Err, AsyncResult, AsyncOk, AsyncErr
@@ -141,4 +141,9 @@ __all__ = [
     "over",
     "trace_pipeline",
     "peek",
+    "ims",
+    "_0", "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8", "_9",
+    "_a", "_b", "_c", "_d", "_e", "_f",
+    "MultiI",
+    "ImplicitSeries",
 ]
